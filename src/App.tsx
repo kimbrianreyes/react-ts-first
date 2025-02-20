@@ -1,6 +1,7 @@
 import { useState } from "react";
 import TodoItem from "./components/TodoItem";
 import { dummyData } from "./data/todos";
+import AddTodoForm from "./components/AddTodoForm";
 
 function App() {
   const [todos, setTodos] = useState(dummyData);
@@ -11,10 +12,22 @@ function App() {
     );
   }
 
+  function addTodo(title: string) {
+    setTodos((prevTodos) => [
+      ...prevTodos,
+      {
+        id: Math.max(...prevTodos.map((todo) => todo.id), 0) + 1,
+        title,
+        completed: false,
+      },
+    ]);
+  }
+
   return (
     <main className="py-10 bg-fuchsia-200 h-screen space-y-5">
       <h1 className="font-bold text-4xl text-center">Your Todos</h1>
-      <div className="max-w-lg mx-auto bg-fuchsia-100 rounded-md p-5 shadow-lg">
+      <div className="max-w-lg mx-auto bg-fuchsia-100 rounded-md p-5 shadow-lg space-y-6">
+        <AddTodoForm onSubmit={addTodo} />
         <div className="space-y-2">
           {todos.map((todo) => (
             <TodoItem
